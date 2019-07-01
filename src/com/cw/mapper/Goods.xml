@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cw.mapper.GoodsMapper">
+	<select id="allGoods" resultType="GoodsInfo">
+		select * from
+		GoodsInfo
+	</select>
+
+	<select id="oneGoods" resultType="GoodsInfo" parameterType="String">
+		select * from
+		GoodsInfo
+		where id=#{id}
+	</select>
+
+	<select id="oneGoodsByName" resultType="GoodsInfo"
+		parameterType="String">
+		select * from
+		GoodsInfo
+		where name=#{name}
+	</select>
+	<select id="findGoods" resultType="int">
+		select count(*) from
+		UserInfo
+		where name=#{name}
+	</select>
+
+	<select id="addGoods" resultType="GoodsInfo">
+		insert into
+		GoodsInfo(name,price,num,info,img) values
+		(#{name},#{price},#{num},#{info},#{img})
+	</select>
+
+	<delete id="delGoods">
+		delete from GoodsInfo where id=#{id}
+	</delete>
+
+	<!-- <insert id="addReceive" parameterType="java.util.List" > insert into 
+		Orders(tel,address,name) values <foreach collection="list" item="item" index="index" 
+		separator=","> (#{item.tel},#{item.address},#{item.name}) </foreach> </insert> -->
+
+	<insert id="addOrder" parameterType="java.util.List">
+
+		insert into
+		Orders(oid,ordertime,total,state,uid,tel,address,rname)
+		values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.oid},#{item.ordertime},#{item.total},#{item.state},#{item.uid},#{item.tel},#{item.address},#{item.rname})
+		</foreach>
+	</insert>
+
+
+
+	<insert id="addOrderItem" parameterType="java.util.List">
+		insert into
+		OrderItem(itemid,count,subtotal,id,oid,name) values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.itemid},#{item.count},#{item.subtotal},#{item.id},#{item.oid},#{item.name})
+		</foreach>
+	</insert>
+
+
+
+	<select id="selectAllOrder" resultType="Order">
+		select * from Orders
+		where uid=#{uid}
+	</select>
+
+	<select id="selectOneOrder" resultType="OrderItem">
+
+		select
+		OrderItem.itemid,OrderItem.id,OrderItem.count,OrderItem.subtotal,OrderItem.oid,OrderItem.name,
+		Orders.rname,Orders.tel,Orders.address
+
+		from Orders left join OrderItem on Orders.oid=OrderItem.oid
+		where
+		Orders.oid=#{oid}
+
+		<!-- select * from OrderItem where oid=#{oid} -->
+	</select>
+
+	<delete id="delOrder">
+		delete from Orders where oid=#{oid}
+	</delete>
+
+</mapper>

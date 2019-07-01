@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cw.mapper.UAndSInfoMapper">
+
+
+	<!-- 买 家 -->
+	<select id="login" resultType="UserInfo" parameterType="String">
+		select * from UserInfo where email=#{email} and password=#{password}
+	</select>
+
+	<select id="register" resultType="UserInfo">
+		insert into
+		UserInfo(name,email,password) values
+		(#{name},#{email},#{password})
+	</select>
+
+	<select id="findUser" resultType="int">
+		select count(*) from UserInfo
+		where email=#{email}
+	</select>
+
+	<update id="updateUser" >
+		update UserInfo
+		<set>
+			<if test="name != null">name=#{name},</if>
+			<if test="password != null">password=#{password}</if>
+		</set>
+		<where>
+			email=#{email}
+		</where>
+	</update>
+
+
+	<!-- 卖 家 -->
+	<select id="loginSaler" resultType="SalerInfo" parameterType="String">
+		select * from SalerInfo where email=#{email} and password=#{password}
+	</select>
+
+	<select id="registerSaler" resultType="SalerInfo">
+		insert into
+		SalerInfo(name,email,password) values
+		(#{name},#{email},#{password})
+	</select>
+
+	<select id="findSaler" resultType="int">
+		select count(*) from SalerInfo
+		where email=#{email}
+	</select>
+
+	<update id="updateSaler" parameterType="SalerInfo">
+		update SalerInfo
+		<set>
+			<if test="name != null">name=#{name},</if>
+			<if test="password != null">password=#{password}</if>
+		</set>
+		<where>
+			email=#{email}
+		</where>
+	</update>
+</mapper>
